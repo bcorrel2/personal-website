@@ -1,17 +1,496 @@
 ---
+const projects = [
+  {
+    title: "Passion Project",
+    description: "A short note about something I am building, exploring, or learning.",
+    href: "#projects",
+  },
+  {
+    title: "Project Writeup",
+    description: "A place for a deeper case study, demo, or link to the finished work.",
+    href: "#projects",
+  },
+];
 
+const links = [
+  { label: "Resume", href: "/resume.pdf" },
+  { label: "GitHub", href: "https://github.com/" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/" },
+  { label: "Email", href: "mailto:hello@example.com" },
+];
+
+const workExperience = [
+  {
+    role: "Application Engineer",
+    company: "Discover Financial Services",
+    context: "",
+    location: "Riverwoods, IL",
+    years: "November 2024 - Present",
+    icon: "/resume-icons/discover.jpeg",
+    acquisition: {
+      label: "Acquired by Capital One Financial Corporation",
+      icon: "/resume-icons/capitalone.jpeg",
+    },
+  },
+  {
+    role: "Java Developer",
+    company: "J.P. Morgan Chase & Co.",
+    context: "",
+    location: "Chicago, IL",
+    years: "January 2024 - October 2024",
+    icon: "/resume-icons/jpmorganchase.jpeg",
+    acquisition: null,
+  },
+  {
+    role: "Software Engineer (Full-Stack)",
+    company: "Capital One Financial Corporation",
+    context: "",
+    location: "Chicago, IL",
+    years: "January 2022 - July 2023",
+    icon: "/resume-icons/capitalone.jpeg",
+    acquisition: null,
+  },
+  {
+    role: "Programmer",
+    company: "Ken's Beverage, Inc.",
+    context: "",
+    location: "Plainfield, IL",
+    years: "December 2019 - January 2022",
+    icon: "/resume-icons/kensbeverage.jpeg",
+    acquisition: {
+      label: "Acquired by Pentair plc",
+      icon: "/resume-icons/pentair.jpeg",
+    },
+  },
+];
+
+const education = [
+  {
+    school: "Purdue University",
+    details: "Master of Business Administration (MBA), Daniels School of Business",
+    years: "2025 - 2026 (Expected)",
+    icon: "/resume-icons/purdue.jpeg",
+    links: [
+      { label: "Business & Technology", href: "#" },
+      { label: "Business & Economic Data Analytics", href: "#" },
+    ],
+  },
+  {
+    school: "University of Illinois Urbana-Champaign",
+    details: "B.S. Computer Science & Linguistics",
+    years: "2015 - 2019",
+    icon: "/resume-icons/illinois.jpeg",
+    links: [
+      { label: "Information Accessibility Design and Policy", href: "#" },
+      { label: "Diploma", href: "/illinois-diploma.pdf" },
+    ],
+  },
+];
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="description"
+      content="Personal website for resume, projects, and contact links."
+    />
+    <title>Ben Correll</title>
+  </head>
+  <body>
+    <main class="site-shell">
+      <header class="hero">
+        <div class="hero-heading">
+          <div class="portrait-frame">
+            <p class="eyebrow">Senior Software Engineer</p>
+            <img class="portrait" src="/me.jpeg" alt="Ben Correll" />
+          </div>
+          <h1>Ben Correll</h1>
+        </div>
+        <p class="intro">
+          Software engineer with experience in modernizing enterprise financial platforms using Java, Python, and AWS.
+        </p>
+        <nav class="actions" aria-label="Primary links">
+          <a class="button primary" href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+            View Resume
+          </a>
+          <a class="button" href="#projects">See Projects</a>
+        </nav>
+      </header>
+
+      <section class="section" aria-labelledby="work-heading">
+        <h2 id="work-heading">Work Experience</h2>
+        <div class="resume-list">
+          {
+            workExperience.map((item) => (
+              <article class="resume-item">
+                <img class="resume-icon" src={item.icon} alt={`${item.company} logo`} />
+                <div>
+                  <h3>{item.role}</h3>
+                  <p class="resume-organization">{item.company}</p>
+                  {item.context && <p>{item.context}</p>}
+                  <p class="resume-years">{item.years}</p>
+                  <p>{item.location}</p>
+                  {
+                    item.acquisition && (
+                      <div class="resume-note">
+                        <img src={item.acquisition.icon} alt="" />
+                        <span>{item.acquisition.label}</span>
+                      </div>
+                    )
+                  }
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="education-heading">
+        <h2 id="education-heading">Education</h2>
+        <div class="resume-list">
+          {
+            education.map((item) => (
+              <article class="resume-item">
+                <img class="resume-icon" src={item.icon} alt={`${item.school} logo`} />
+                <div>
+                  <h3>{item.school}</h3>
+                  <p>{item.details}</p>
+                  <p class="resume-years">{item.years}</p>
+                  {
+                    item.links.length > 0 && (
+                      <div class="education-links">
+                        {item.links.map((link) => (
+                          <a href={link.href}>{link.label}</a>
+                        ))}
+                      </div>
+                    )
+                  }
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="links-heading">
+        <h2 id="links-heading">Links</h2>
+        <div class="link-list">
+          {
+            links.map((link) => (
+              <a href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}>
+                {link.label}
+              </a>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="section" id="projects" aria-labelledby="projects-heading">
+        <h2 id="projects-heading">Projects</h2>
+        <div class="project-grid">
+          {
+            projects.map((project) => (
+              <article class="project-card">
+                <h3>{project.title}</h3>
+                <p>{project.description}</p>
+                <a href={project.href}>Open</a>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+    </main>
+  </body>
 </html>
+
+<style>
+  :root {
+    color: #1b1f23;
+    background: #f7f3ec;
+    font-family:
+      Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      linear-gradient(180deg, rgba(247, 243, 236, 0.96), rgba(238, 243, 241, 0.96)),
+      #f7f3ec;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .site-shell {
+    width: min(100% - 32px, 960px);
+    margin: 0 auto;
+    padding: 64px 0;
+  }
+
+  .hero {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid rgba(27, 31, 35, 0.14);
+  }
+
+  .eyebrow {
+    margin: 0 0 8px;
+    color: #2f6f62;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin-top: 0;
+  }
+
+  h1 {
+    max-width: 780px;
+    margin-bottom: 0;
+    font-size: clamp(3.2rem, 9vw, 6.8rem);
+    line-height: 0.95;
+    letter-spacing: 0;
+  }
+
+  .hero-heading {
+    display: grid;
+    grid-template-columns: minmax(160px, 0.34fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 22px;
+  }
+
+  .portrait {
+    width: 100%;
+    max-width: 260px;
+    aspect-ratio: 1;
+    border: 1px solid rgba(27, 31, 35, 0.14);
+    border-radius: 18px;
+    box-shadow: 0 18px 48px rgba(27, 31, 35, 0.14);
+    object-fit: cover;
+  }
+
+  .portrait-frame {
+    width: 100%;
+    max-width: 260px;
+  }
+
+  h2 {
+    margin-bottom: 18px;
+    font-size: 1rem;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+  }
+
+  .intro {
+    max-width: 640px;
+    color: #4b5560;
+    font-size: clamp(1.15rem, 3vw, 1.45rem);
+    line-height: 1.55;
+  }
+
+  .actions,
+  .link-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .button,
+  .link-list a,
+  .project-card a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid rgba(27, 31, 35, 0.18);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.64);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .button.primary {
+    border-color: #1b1f23;
+    background: #1b1f23;
+    color: #ffffff;
+  }
+
+  .section {
+    padding: 42px 0;
+    border-bottom: 1px solid rgba(27, 31, 35, 0.1);
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .project-card {
+    min-height: 190px;
+    padding: 22px;
+    border: 1px solid rgba(27, 31, 35, 0.12);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.62);
+  }
+
+  .project-card p {
+    color: #4b5560;
+    line-height: 1.55;
+  }
+
+  .resume-list {
+    display: grid;
+    gap: 18px;
+  }
+
+  .resume-item {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    align-items: center;
+    gap: 18px;
+    padding: 18px 0;
+  }
+
+  .resume-item + .resume-item {
+    border-top: 1px solid rgba(27, 31, 35, 0.1);
+  }
+
+  .resume-item h3 {
+    margin-bottom: 4px;
+  }
+
+  .resume-item p {
+    margin-bottom: 4px;
+    color: #4b5560;
+    line-height: 1.45;
+  }
+
+  .resume-organization {
+    color: #1b1f23;
+    font-weight: 700;
+  }
+
+  .resume-years {
+    font-size: 0.95rem;
+  }
+
+  .resume-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    color: #1f5f53;
+    font-size: 0.92rem;
+    font-weight: 700;
+  }
+
+  .resume-note img {
+    width: 24px;
+    aspect-ratio: 1;
+    border: 1px solid rgba(27, 31, 35, 0.14);
+    border-radius: 6px;
+    object-fit: cover;
+  }
+
+  .education-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+    margin-top: 10px;
+  }
+
+  .education-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    color: #1f5f53;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+  }
+
+  .education-links a:hover {
+    color: #123d36;
+  }
+
+  .education-links a + a::before {
+    content: "|";
+    margin: 0 10px;
+    color: rgba(27, 31, 35, 0.34);
+    font-weight: 500;
+  }
+
+  .resume-icon {
+    width: 76px;
+    aspect-ratio: 1;
+    border: 1px solid rgba(27, 31, 35, 0.14);
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(27, 31, 35, 0.12);
+    object-fit: cover;
+  }
+
+  @media (max-width: 680px) {
+    .site-shell {
+      width: min(100% - 24px, 960px);
+      padding: 24px 0;
+    }
+
+    .hero {
+      padding: 48px 0 34px;
+    }
+
+    .hero-heading {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .portrait {
+      width: min(64vw, 220px);
+      border-radius: 16px;
+    }
+
+    .portrait-frame {
+      width: min(64vw, 220px);
+    }
+
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .resume-item {
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .resume-icon {
+      width: 58px;
+      border-radius: 12px;
+    }
+  }
+</style>
