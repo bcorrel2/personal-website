@@ -18,8 +18,8 @@ const projects = [
 const links = [
   { label: "Resume", href: "/resume.pdf" },
   { label: "GitHub", href: "https://github.com/bcorrel2" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/" },
-  { label: "Email", href: "mailto:hello@example.com" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/bcorrel2/" },
+  { label: "Contact Me", href: "", disabled: true, title: "Coming Soon" },
 ];
 
 const sectionLinks = [
@@ -42,6 +42,7 @@ const workExperience = [
     icon: "/resume-icons/discover.jpeg",
     acquisition: {
       label: "Acquired by Capital One Financial Corporation",
+      shortLabel: "Acquired by Capital One",
       icon: "/resume-icons/capitalone.jpeg",
     },
     links: [],
@@ -67,6 +68,7 @@ const workExperience = [
     links: [
       {
         label: "Certified Secure Software Engineer - Associate",
+        shortLabel: "Certified Secure Software Engineer",
         href: "/csse.pdf",
       },
     ],
@@ -80,6 +82,7 @@ const workExperience = [
     icon: "/resume-icons/kensbeverage.jpeg",
     acquisition: {
       label: "Acquired by Pentair plc",
+      shortLabel: "Acquired by Pentair",
       icon: "/resume-icons/pentair.jpeg",
     },
     links: [],
@@ -89,15 +92,19 @@ const workExperience = [
 const education = [
   {
     school: "Purdue University",
-    details: "Master of Business Administration (MBA), Daniels School of Business",
+    details:
+      "Master of Business Administration (MBA), Mitch Daniels School of Business",
+    shortDetails:
+      "Master of Business Administration (MBA), Daniels School of Business",
     years: "2025 - 2026 (Expected)",
     icon: "/resume-icons/purdue.jpeg",
     href: "/mba",
     links: [
-      { label: "Business & Technology", href: "/business-technology" },
+      { label: "Business & Technology", href: "/mba#business-technology" },
       {
         label: "Business & Economic Data Analytics",
-        href: "/business-economics-data-analytics",
+        shortLabel: "BEDA",
+        href: "/mba#business-economics-data-analytics",
       },
     ],
   },
@@ -108,7 +115,11 @@ const education = [
     icon: "/resume-icons/illinois.jpeg",
     href: "/uiuc",
     links: [
-      { label: "Information Accessibility Design and Policy", href: "/iadp" },
+      {
+        label: "Information Accessibility Design and Policy",
+        shortLabel: "IADP",
+        href: "/iadp",
+      },
       { label: "Diploma", href: "/illinois-diploma.pdf" },
     ],
   },
@@ -151,7 +162,7 @@ const honorsAndAwards = [
 ];
 ---
 
-<html lang="en">
+<html lang="en-US">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -259,7 +270,7 @@ const honorsAndAwards = [
             </h1>
             <p class="subtitle">
               <span>
-                Application Engineer @
+                Application Engineer <span class="subtitle-at">@</span>
               </span>
               <span class="subtitle-company">
                 <img
@@ -338,15 +349,36 @@ const honorsAndAwards = [
                         alt=""
                       />
                       <span>
-                        {item.acquisition.label}
+                        <span class="resume-note-label-full">
+                          {item.acquisition.label}
+                        </span>
+                        {
+                          item.acquisition.shortLabel && (
+                            <span class="resume-note-label-short">
+                              {item.acquisition.shortLabel}
+                            </span>
+                          )
+                        }
                       </span>
                     </div>
                   )}
                   {item.links.length > 0 && (
                     <div class="education-links">
                       {item.links.map((link) => (
-                        <a href={link.href}>
-                          {link.label}
+                        <a
+                          class:list={[link.shortLabel && "has-short-label"]}
+                          href={link.href}
+                        >
+                          <span class="education-label-full">
+                            {link.label}
+                          </span>
+                          {
+                            link.shortLabel && (
+                              <span class="education-label-short">
+                                {link.shortLabel}
+                              </span>
+                            )
+                          }
                         </a>
                       ))}
                     </div>
@@ -381,7 +413,16 @@ const honorsAndAwards = [
                     {item.school}
                   </h3>
                   <p>
-                    {item.details}
+                    <span class="education-detail-full">
+                      {item.details}
+                    </span>
+                    {
+                      item.shortDetails && (
+                        <span class="education-detail-short">
+                          {item.shortDetails}
+                        </span>
+                      )
+                    }
                   </p>
                   <p class="resume-years">
                     {item.years}
@@ -389,8 +430,20 @@ const honorsAndAwards = [
                   {item.links.length > 0 && (
                     <div class="education-links">
                       {item.links.map((link) => (
-                        <a href={link.href}>
-                          {link.label}
+                        <a
+                          class:list={[link.shortLabel && "has-short-label"]}
+                          href={link.href}
+                        >
+                          <span class="education-label-full">
+                            {link.label}
+                          </span>
+                          {
+                            link.shortLabel && (
+                              <span class="education-label-short">
+                                {link.shortLabel}
+                              </span>
+                            )
+                          }
                         </a>
                       ))}
                     </div>
@@ -407,15 +460,21 @@ const honorsAndAwards = [
         </h2>
         <div class="link-list">
           {
-            links.map((link) => (
-              <a
-                href={link.href}
-                target={link.href.startsWith("http") ? "_blank" : undefined}
-                rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-              >
-                {link.label}
-              </a>
-            ))
+            links.map((link) =>
+              link.disabled ? (
+                <button type="button" title={link.title} disabled>
+                  {link.label}
+                </button>
+              ) : (
+                <a
+                  href={link.href}
+                  target={link.href.startsWith("http") ? "_blank" : undefined}
+                  rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                >
+                  {link.label}
+                </a>
+              ),
+            )
           }
         </div>
       </section>
@@ -450,8 +509,20 @@ const honorsAndAwards = [
                   {item.links.length > 0 && (
                     <div class="education-links">
                       {item.links.map((link) => (
-                        <a href={link.href}>
-                          {link.label}
+                        <a
+                          class:list={[link.shortLabel && "has-short-label"]}
+                          href={link.href}
+                        >
+                          <span class="education-label-full">
+                            {link.label}
+                          </span>
+                          {
+                            link.shortLabel && (
+                              <span class="education-label-short">
+                                {link.shortLabel}
+                              </span>
+                            )
+                          }
                         </a>
                       ))}
                     </div>
@@ -675,6 +746,118 @@ const honorsAndAwards = [
         });
       });
 
+      const mobileView = window.matchMedia("(max-width: 680px)");
+      const projectGrid = document.querySelector(".project-grid");
+
+      if (
+        mobileView.matches &&
+        projectGrid instanceof HTMLElement &&
+        !projectGrid.nextElementSibling?.classList.contains("carousel-scrubber")
+      ) {
+        const projectCards = Array.from(
+          projectGrid.querySelectorAll(".project-card"),
+        );
+
+        if (projectCards.length > 1) {
+          const scrubber = document.createElement("div");
+          scrubber.className = "carousel-scrubber";
+          scrubber.setAttribute("aria-hidden", "true");
+
+          const scrubberThumb = document.createElement("button");
+          scrubberThumb.type = "button";
+          scrubber.append(scrubberThumb);
+
+          const updateProjectScrubber = () => {
+            const maxScroll = projectGrid.scrollWidth - projectGrid.clientWidth;
+            const scrubberWidth = scrubber.clientWidth;
+            const thumbWidth = Math.max(
+              28,
+              (projectGrid.clientWidth / projectGrid.scrollWidth) * scrubberWidth,
+            );
+            const maxThumbOffset = scrubberWidth - thumbWidth;
+            const progress = maxScroll > 0 ? projectGrid.scrollLeft / maxScroll : 0;
+
+            scrubberThumb.style.width = `${thumbWidth}px`;
+            scrubberThumb.style.transform = `translateX(${progress * maxThumbOffset}px)`;
+          };
+
+          let isProjectDragging = false;
+          let projectDragStartX = 0;
+          let projectDragStartScroll = 0;
+
+          projectGrid.addEventListener("pointerdown", (event) => {
+            if (event.pointerType === "mouse" && event.button !== 0) {
+              return;
+            }
+
+            isProjectDragging = true;
+            projectDragStartX = event.clientX;
+            projectDragStartScroll = projectGrid.scrollLeft;
+            projectGrid.classList.add("is-dragging");
+            projectGrid.setPointerCapture(event.pointerId);
+          });
+
+          projectGrid.addEventListener("pointermove", (event) => {
+            if (!isProjectDragging) {
+              return;
+            }
+
+            projectGrid.scrollLeft =
+              projectDragStartScroll - (event.clientX - projectDragStartX);
+          });
+
+          const stopProjectDrag = (event) => {
+            isProjectDragging = false;
+            projectGrid.classList.remove("is-dragging");
+            if (projectGrid.hasPointerCapture(event.pointerId)) {
+              projectGrid.releasePointerCapture(event.pointerId);
+            }
+          };
+
+          projectGrid.addEventListener("pointerup", stopProjectDrag);
+          projectGrid.addEventListener("pointercancel", stopProjectDrag);
+
+          let isScrubberDragging = false;
+
+          const moveScrubber = (event) => {
+            const rect = scrubber.getBoundingClientRect();
+            const progress = Math.min(
+              1,
+              Math.max(0, (event.clientX - rect.left) / rect.width),
+            );
+
+            projectGrid.scrollLeft =
+              progress * (projectGrid.scrollWidth - projectGrid.clientWidth);
+          };
+
+          scrubber.addEventListener("pointerdown", (event) => {
+            isScrubberDragging = true;
+            scrubber.setPointerCapture(event.pointerId);
+            moveScrubber(event);
+          });
+
+          scrubber.addEventListener("pointermove", (event) => {
+            if (isScrubberDragging) {
+              moveScrubber(event);
+            }
+          });
+
+          scrubber.addEventListener("pointerup", (event) => {
+            isScrubberDragging = false;
+            if (scrubber.hasPointerCapture(event.pointerId)) {
+              scrubber.releasePointerCapture(event.pointerId);
+            }
+          });
+
+          projectGrid.after(scrubber);
+          projectGrid.addEventListener("scroll", updateProjectScrubber, {
+            passive: true,
+          });
+          window.addEventListener("resize", updateProjectScrubber);
+          updateProjectScrubber();
+        }
+      }
+
       const markActiveSection = (id) => {
         sectionLinks.forEach((link) => {
           const isActive =
@@ -860,11 +1043,14 @@ const honorsAndAwards = [
   .subtitle-company {
     display: inline-flex;
     align-items: center;
+    flex: 0 0 auto;
     gap: 8px;
+    white-space: nowrap;
   }
 
   .subtitle-company-icon {
     width: 24px;
+    flex: 0 0 24px;
     aspect-ratio: 1;
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -926,8 +1112,15 @@ const honorsAndAwards = [
     gap: 12px;
   }
 
+  .link-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(116px, 1fr));
+    gap: 10px;
+  }
+
   .button,
   .link-list a,
+  .link-list button,
   .project-action {
     display: inline-flex;
     align-items: center;
@@ -941,12 +1134,24 @@ const honorsAndAwards = [
     cursor: pointer;
     font: inherit;
     font-weight: 700;
+    font-size: 0.92rem;
     text-decoration: none;
+    min-height: 40px;
+    padding: 0 14px;
   }
 
+  .link-list a,
+  .link-list button {
+    min-width: 116px;
+    width: 100%;
+  }
+
+  .link-list button:disabled,
   .project-action:disabled {
+    color: var(--text);
     cursor: not-allowed;
     opacity: 0.52;
+    -webkit-text-fill-color: var(--text);
   }
 
   .button.primary {
@@ -1162,6 +1367,10 @@ const honorsAndAwards = [
     width: fit-content;
   }
 
+  .carousel-scrubber {
+    display: none;
+  }
+
   .resume-list {
     display: grid;
     gap: 18px;
@@ -1220,6 +1429,10 @@ const honorsAndAwards = [
     object-fit: cover;
   }
 
+  .resume-note-label-short {
+    display: none;
+  }
+
   .education-links {
     display: flex;
     flex-wrap: wrap;
@@ -1241,6 +1454,14 @@ const honorsAndAwards = [
 
   .education-links a:hover {
     color: var(--accent-hover);
+  }
+
+  .education-label-short {
+    display: none;
+  }
+
+  .education-detail-short {
+    display: none;
   }
 
   .education-links a + a::before {
@@ -1292,9 +1513,10 @@ const honorsAndAwards = [
     }
 
     .portrait-header .desktop-theme-toggle {
-      position: absolute;
-      top: 0;
-      right: calc(max(24px, calc((100vw - 960px) / 2 - 220px)) - ((100vw - 960px) / 2));
+      position: fixed;
+      top: 36px;
+      right: clamp(36px, 4vw, 72px);
+      z-index: 20;
     }
 
     .section-sidebar {
@@ -1336,6 +1558,7 @@ const honorsAndAwards = [
     }
   }
 
+  /* Designated mobile view */
   @media (max-width: 680px) {
     .site-shell {
       width: min(100% - 24px, 960px);
@@ -1347,26 +1570,216 @@ const honorsAndAwards = [
     }
 
     .hero-heading {
-      grid-template-columns: 1fr;
-      gap: 16px;
+      grid-template-columns: minmax(96px, 0.34fr) minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: clamp(2.1rem, 11vw, 3rem);
+    }
+
+    .subtitle {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      margin-left: 0;
+      font-size: 0.9rem;
+      line-height: 1.12;
+    }
+
+    .subtitle-at {
+      display: none;
+    }
+
+    .subtitle-company {
+      margin-left: 0;
+    }
+
+    .subtitle-company-icon {
+      width: 16px;
+      flex-basis: 16px;
+      border-radius: 4px;
     }
 
     .portrait {
-      width: min(64vw, 220px);
+      width: 100%;
       border-radius: 16px;
     }
 
     .portrait-frame {
-      width: min(64vw, 220px);
+      width: 100%;
+      max-width: 150px;
+    }
+
+    .intro {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    h2 {
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+    }
+
+    h3 {
+      font-size: 1.08rem;
+    }
+
+    .actions .button,
+    .link-list a,
+    .link-list button,
+    .project-action {
+      min-width: 148px;
+    }
+
+    .link-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .project-grid {
-      grid-template-columns: 1fr;
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin-right: -12px;
+      margin-left: -12px;
+      overflow-x: auto;
+      padding: 0 12px 6px;
+      cursor: grab;
+      scroll-padding: 12px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .project-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .project-grid.is-dragging {
+      cursor: grabbing;
+      scroll-snap-type: none;
     }
 
     .resume-item {
       grid-template-columns: 58px minmax(0, 1fr);
       gap: 14px;
+      padding: 16px 0;
+    }
+
+    .resume-item p {
+      font-size: 0.92rem;
+      line-height: 1.38;
+    }
+
+    .resume-years {
+      font-size: 0.86rem;
+    }
+
+    .resume-note {
+      gap: 7px;
+      font-size: 0.86rem;
+    }
+
+    .resume-note img {
+      width: 22px;
+    }
+
+    .resume-note-label-full {
+      display: none;
+    }
+
+    .resume-note-label-short {
+      display: inline;
+    }
+
+    .education-links a {
+      min-height: 26px;
+      font-size: 0.86rem;
+    }
+
+    .education-links a.has-short-label .education-label-full {
+      display: none;
+    }
+
+    .education-links a.has-short-label .education-label-short {
+      display: inline;
+    }
+
+    .education-detail-full {
+      display: none;
+    }
+
+    .education-detail-short {
+      display: inline;
+    }
+
+    .project-card {
+      flex: 0 0 calc(100% - 24px);
+      min-height: 170px;
+      padding: 18px;
+      margin-right: 12px;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    .project-card:last-child {
+      margin-right: 0;
+    }
+
+    .project-card p {
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .project-actions {
+      flex-wrap: nowrap;
+    }
+
+    .project-card .project-action {
+      flex: 1 1 0;
+      min-width: 0;
+      width: auto;
+    }
+
+    .carousel-scrubber {
+      position: relative;
+      display: block;
+      width: min(210px, 58vw);
+      height: 18px;
+      margin: 10px auto 0;
+      padding: 7px 0;
+      cursor: pointer;
+    }
+
+    .carousel-scrubber::before {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--border-soft);
+      content: "";
+      transform: translateY(-50%);
+    }
+
+    .carousel-scrubber button {
+      position: relative;
+      z-index: 1;
+      display: block;
+      height: 4px;
+      min-height: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: var(--accent-strong);
+      cursor: grab;
+      touch-action: none;
+    }
+
+    .legal-disclaimer {
+      font-size: 0.74rem;
+      line-height: 1.45;
     }
 
     .resume-icon {
