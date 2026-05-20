@@ -26,8 +26,9 @@ const sectionLinks = [
   { label: "Profile", href: "#profile" },
   { label: "Work Experience", href: "#work" },
   { label: "Education", href: "#education" },
-  { label: "Projects", href: "#projects" },
+  { label: "Links", href: "#links" },
   { label: "Certifications", href: "#certifications" },
+  { label: "Projects", href: "#projects" },
   { label: "Honors & Awards", href: "#honors" },
 ];
 
@@ -173,6 +174,25 @@ const honorsAndAwards = [
   </head>
   <body>
     <nav class="section-sidebar" aria-label="Page sections">
+      <div class="drawer-controls">
+        <!--
+          Theme icons created by dokodemo - Flaticon
+          https://www.flaticon.com/free-icons/theme
+        -->
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="Switch to dark mode"
+          title="To Dark Mode"
+        >
+          <img
+            class="theme-toggle-icon"
+            src="/icons/light-to-dark.png"
+            alt=""
+            aria-hidden="true"
+          />
+        </button>
+      </div>
       {
         sectionLinks.map((link) => (
           <a href={link.href} data-section-link={link.href.slice(1)}>
@@ -181,8 +201,30 @@ const honorsAndAwards = [
         ))
       }
     </nav>
+    <button
+      class="nav-backdrop"
+      type="button"
+      aria-label="Close section navigation"
+    >
+    </button>
 
     <main class="site-shell">
+      <div class="mobile-top-bar">
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Open section navigation"
+          aria-expanded="false"
+        >
+          <img
+            class="nav-toggle-icon"
+            src="/icons/list.png"
+            alt=""
+            aria-hidden="true"
+          />
+        </button>
+      </div>
+
       <header class="hero" id="profile">
         <div class="hero-heading">
           <div class="portrait-frame">
@@ -192,14 +234,14 @@ const honorsAndAwards = [
                 https://www.flaticon.com/free-icons/theme
               -->
               <button
-                class="theme-toggle"
+                class="theme-toggle desktop-theme-toggle"
                 type="button"
                 aria-label="Switch to dark mode"
                 title="To Dark Mode"
               >
                 <img
                   class="theme-toggle-icon"
-                  src="/icons/dark-to-light.png"
+                  src="/icons/light-to-dark.png"
                   alt=""
                   aria-hidden="true"
                 />
@@ -359,6 +401,68 @@ const honorsAndAwards = [
           }
         </div>
       </section>
+      <section class="section" id="links" aria-labelledby="links-heading">
+        <h2 id="links-heading">
+          Links
+        </h2>
+        <div class="link-list">
+          {
+            links.map((link) => (
+              <a
+                href={link.href}
+                target={link.href.startsWith("http") ? "_blank" : undefined}
+                rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </div>
+      </section>
+
+      <section
+        class="section"
+        id="certifications"
+        aria-labelledby="certifications-heading"
+      >
+        <h2 id="certifications-heading">
+          Certifications
+        </h2>
+        <div class="resume-list">
+          {
+            certifications.map((item) => (
+              <article class="resume-item">
+                <img
+                  class="resume-icon certification-icon"
+                  src={item.icon}
+                  alt={`${item.issuer} logo`}
+                />
+                <div>
+                  <h3>
+                    {item.title}
+                  </h3>
+                  <p class="resume-organization">
+                    {item.issuer}
+                  </p>
+                  <p class="resume-years">
+                    {item.note}
+                  </p>
+                  {item.links.length > 0 && (
+                    <div class="education-links">
+                      {item.links.map((link) => (
+                        <a href={link.href}>
+                          {link.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
 
       <section class="section" id="projects" aria-labelledby="projects-heading">
         <h2 id="projects-heading">
@@ -413,51 +517,11 @@ const honorsAndAwards = [
           }
         </div>
       </section>
-
       <section
-        class="section"
-        id="certifications"
-        aria-labelledby="certifications-heading"
+        class="section final-section"
+        id="honors"
+        aria-labelledby="honors-heading"
       >
-        <h2 id="certifications-heading">
-          Certifications
-        </h2>
-        <div class="resume-list">
-          {
-            certifications.map((item) => (
-              <article class="resume-item">
-                <img
-                  class="resume-icon certification-icon"
-                  src={item.icon}
-                  alt={`${item.issuer} logo`}
-                />
-                <div>
-                  <h3>
-                    {item.title}
-                  </h3>
-                  <p class="resume-organization">
-                    {item.issuer}
-                  </p>
-                  <p class="resume-years">
-                    {item.note}
-                  </p>
-                  {item.links.length > 0 && (
-                    <div class="education-links">
-                      {item.links.map((link) => (
-                        <a href={link.href}>
-                          {link.label}
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </article>
-            ))
-          }
-        </div>
-      </section>
-
-      <section class="section" id="honors" aria-labelledby="honors-heading">
         <h2 id="honors-heading">
           Honors and Awards
         </h2>
@@ -485,28 +549,23 @@ const honorsAndAwards = [
             ))
           }
         </div>
-      </section>
-
-      <section class="section" id="links" aria-labelledby="links-heading">
-        <h2 id="links-heading">
-          Links
-        </h2>
-        <div class="link-list">
-          {
-            links.map((link) => (
-              <a
-                href={link.href}
-                target={link.href.startsWith("http") ? "_blank" : undefined}
-                rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-              >
-                {link.label}
-              </a>
-            ))
-          }
+        <div class="section-action">
+          <a
+            class="top-link"
+            href="#profile"
+            aria-label="Go to top of page"
+            title="Top"
+          >
+            Top of Page
+          </a>
         </div>
       </section>
 
-      <footer class="legal-disclaimer">
+      <footer
+        class="section legal-disclaimer"
+        id="legal"
+        aria-label="Legal disclaimer"
+      >
         <p>
           This site is a personal portfolio. Company, school, certification, and
           award names, logos, and marks are the property of their respective
@@ -518,10 +577,11 @@ const honorsAndAwards = [
     <script>
       /** @typedef {"light" | "dark"} Theme */
 
-      /** @type {HTMLButtonElement | null} */
-      const themeToggle = document.querySelector(".theme-toggle");
-      /** @type {HTMLImageElement | null} */
-      const themeToggleIcon = document.querySelector(".theme-toggle-icon");
+      const themeToggles = document.querySelectorAll(".theme-toggle");
+      const themeToggleIcons = document.querySelectorAll(".theme-toggle-icon");
+      const navToggle = document.querySelector(".nav-toggle");
+      const sectionSidebar = document.querySelector(".section-sidebar");
+      const navBackdrop = document.querySelector(".nav-backdrop");
       const resumeItemLinks = document.querySelectorAll(".resume-item-link");
       const sections = document.querySelectorAll(".hero[id], .section[id]");
       const sectionLinks = document.querySelectorAll("[data-section-link]");
@@ -538,7 +598,7 @@ const honorsAndAwards = [
           localStorage.setItem("theme", theme);
         }
 
-        if (themeToggle) {
+        themeToggles.forEach((themeToggle) => {
           themeToggle.setAttribute(
             "aria-label",
             theme === "dark" ? "Switch to light mode" : "Switch to dark mode",
@@ -547,12 +607,12 @@ const honorsAndAwards = [
             "title",
             theme === "dark" ? "Light Mode" : "Dark Mode",
           );
-        }
+        });
 
-        if (themeToggleIcon) {
+        themeToggleIcons.forEach((themeToggleIcon) => {
           themeToggleIcon.src =
-            theme === "dark" ? "/icons/dark-to-light.png" : "/icons/dark-to-light.png";
-        }
+            theme === "dark" ? "/icons/dark-to-light.png" : "/icons/light-to-dark.png";
+        });
       };
 
       const currentTheme =
@@ -565,8 +625,31 @@ const honorsAndAwards = [
         }
       });
 
-      themeToggle?.addEventListener("click", () => {
-        setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+      themeToggles.forEach((themeToggle) => {
+        themeToggle.addEventListener("click", () => {
+          setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+        });
+      });
+
+      const closeSectionNavigation = () => {
+        sectionSidebar?.classList.remove("is-open");
+        navBackdrop?.classList.remove("is-open");
+        navToggle?.setAttribute("aria-expanded", "false");
+      };
+
+      navToggle?.addEventListener("click", () => {
+        const isOpen = !sectionSidebar?.classList.contains("is-open");
+        sectionSidebar?.classList.toggle("is-open", isOpen);
+        navBackdrop?.classList.toggle("is-open", isOpen);
+        navToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      navBackdrop?.addEventListener("click", closeSectionNavigation);
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeSectionNavigation();
+        }
       });
 
       resumeItemLinks.forEach((item) => {
@@ -696,6 +779,34 @@ const honorsAndAwards = [
     width: min(100% - 32px, 960px);
     margin: 0 auto;
     padding: 36px 0 64px;
+  }
+
+  .mobile-top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100vw;
+    min-height: 44px;
+    margin-left: calc(50% - 50vw);
+    margin-bottom: 18px;
+    padding: 2px max(16px, calc((100vw - 960px) / 2)) 12px;
+    border-bottom: 1px solid var(--border-soft);
+    background: var(--background);
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    color: var(--accent-strong);
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
   }
 
   .hero {
@@ -856,18 +967,14 @@ const honorsAndAwards = [
     padding: 0;
   }
 
-  .portrait-header .theme-toggle {
-    position: absolute;
-    top: 24px;
-    right: 0;
-  }
-
+  .nav-toggle-icon,
   .theme-toggle-icon {
     width: 24px;
     aspect-ratio: 1;
     display: block;
   }
 
+  :root[data-theme="dark"] .nav-toggle-icon,
   :root[data-theme="dark"] .theme-toggle-icon {
     filter: invert(1);
   }
@@ -878,13 +985,71 @@ const honorsAndAwards = [
     scroll-margin-top: 28px;
   }
 
+  .final-section {
+    padding-bottom: 34px;
+  }
+
   .section-sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: min(78vw, 280px);
+    padding: 72px 24px 32px;
+    border-right: 1px solid var(--border);
+    background: var(--background);
+    box-shadow: 18px 0 42px var(--shadow);
+    transform: translateX(-105%);
+    transition: transform 180ms ease;
+  }
+
+  .section-sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  .drawer-controls {
+    position: absolute;
+    top: 24px;
+    left: 0;
+    right: 15px;
+    height: 24px;
+  }
+
+  .drawer-controls .theme-toggle {
+    position: absolute;
+    left: 15px;
+  }
+
+  .desktop-theme-toggle {
     display: none;
   }
 
-  .section-sidebar a {
+  .nav-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+    border: 0;
+    background: rgba(0, 0, 0, 0.28);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+  }
+
+  .nav-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .section-sidebar [data-section-link] {
     position: relative;
     display: block;
+    padding-top: 22px;
+    padding-bottom: 22px;
     padding-left: 22px;
     color: color-mix(in srgb, var(--muted) 78%, transparent);
     font-size: 0.78rem;
@@ -895,9 +1060,9 @@ const honorsAndAwards = [
     text-transform: uppercase;
   }
 
-  .section-sidebar a::before {
+  .section-sidebar [data-section-link]::before {
     position: absolute;
-    top: 0.4em;
+    top: 50%;
     left: 0;
     z-index: 1;
     width: 7px;
@@ -906,19 +1071,31 @@ const honorsAndAwards = [
     border-radius: 50%;
     background: var(--background);
     content: "";
+    transform: translateY(-50%);
   }
 
-  .section-sidebar a:hover,
-  .section-sidebar a.is-active {
+  .section-sidebar::before {
+    position: absolute;
+    top: 72px;
+    bottom: 72px;
+    left: 27px;
+    width: 1px;
+    background: color-mix(in srgb, var(--border) 72%, transparent);
+    content: "";
+  }
+
+  .section-sidebar [data-section-link]:hover,
+  .section-sidebar [data-section-link].is-active {
     color: var(--accent-strong);
   }
 
-  .section-sidebar a.is-active::before {
+  .section-sidebar [data-section-link].is-active::before {
     background: currentColor;
   }
 
   .legal-disclaimer {
     padding: 28px 0 56vh;
+    border-bottom: 0;
     color: color-mix(in srgb, var(--muted) 72%, transparent);
     font-size: 0.82rem;
     line-height: 1.55;
@@ -927,6 +1104,30 @@ const honorsAndAwards = [
   .legal-disclaimer p {
     max-width: 760px;
     margin-bottom: 0;
+  }
+
+  .section-action {
+    display: flex;
+    justify-content: center;
+    padding-top: 42px;
+    padding-bottom: 4px;
+  }
+
+  .top-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 16px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface-card);
+    color: var(--accent-strong);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    text-transform: uppercase;
   }
 
   .project-grid {
@@ -1067,11 +1268,33 @@ const honorsAndAwards = [
   }
 
   @media (min-width: 1380px) {
-    .portrait-header .theme-toggle {
-      position: fixed;
-      top: 36px;
-      right: clamp(36px, 4vw, 72px);
-      z-index: 20;
+    .mobile-top-bar {
+      position: static;
+      width: auto;
+      min-height: 0;
+      margin-left: 0;
+      margin-bottom: 0;
+      padding: 0;
+      border-bottom: 0;
+    }
+
+    .nav-toggle,
+    .nav-backdrop {
+      display: none;
+    }
+
+    .drawer-controls {
+      display: none;
+    }
+
+    .desktop-theme-toggle {
+      display: inline-flex;
+    }
+
+    .portrait-header .desktop-theme-toggle {
+      position: absolute;
+      top: 0;
+      right: calc(max(24px, calc((100vw - 960px) / 2 - 220px)) - ((100vw - 960px) / 2));
     }
 
     .section-sidebar {
@@ -1083,8 +1306,18 @@ const honorsAndAwards = [
       flex-direction: column;
       justify-content: space-between;
       width: 172px;
+      padding: 0;
+      border-right: 0;
+      background: transparent;
+      box-shadow: none;
       min-height: min(560px, 72vh);
       transform: translateY(-50%);
+      transition: none;
+    }
+
+    .section-sidebar [data-section-link] {
+      padding-top: 0;
+      padding-bottom: 0;
     }
 
     .section-sidebar::before {
@@ -1096,6 +1329,11 @@ const honorsAndAwards = [
       background: color-mix(in srgb, var(--border) 72%, transparent);
       content: "";
     }
+
+    .section-sidebar [data-section-link]::before {
+      top: 0.4em;
+      transform: none;
+    }
   }
 
   @media (max-width: 680px) {
@@ -1105,7 +1343,7 @@ const honorsAndAwards = [
     }
 
     .hero {
-      padding: 48px 0 34px;
+      padding: 24px 0 34px;
     }
 
     .hero-heading {
