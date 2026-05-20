@@ -1,0 +1,556 @@
+---
+const courses = [
+  "Accessible Electronic Material",
+  "Designing Accessible Web Resources",
+  "Disability & Assistive Technology",
+];
+
+const section = {
+  heading: "Courses",
+  items: courses,
+};
+
+const programWebsiteUrl = "https://iadp.ahs.illinois.edu/program/details/";
+const slugify = (value) => value.toLowerCase().replaceAll(" ", "-");
+
+const sectionLinks = [
+  { label: "Degree", href: "#degree" },
+  { label: "Curriculum", href: "#curriculum" },
+];
+---
+
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <title>
+      Information Accessibility Design and Policy
+    </title>
+    <script is:inline>
+      const savedTheme = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme =
+        savedTheme ?? (prefersDark ? "dark" : "light");
+    </script>
+  </head>
+  <body>
+    <nav class="section-sidebar" aria-label="Page sections">
+      {
+        sectionLinks.map((link) => (
+          <a href={link.href} data-section-link={link.href.slice(1)}>
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <main class="site-shell">
+      <div class="page-controls">
+        <div class="page-control-links">
+          <a
+            class="home-link"
+            href="/"
+            aria-label="Go home"
+            title="Home"
+          >
+            <img
+              class="home-link-icon"
+              src="/icons/home.png"
+              alt=""
+              aria-hidden="true"
+            />
+          </a>
+        </div>
+        <!--
+          Theme icons created by dokodemo - Flaticon
+          https://www.flaticon.com/free-icons/theme
+        -->
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="Switch to dark mode"
+          title="To Dark Mode"
+        >
+          <img
+            class="theme-toggle-icon"
+            src="/icons/dark-to-light.png"
+            alt=""
+            aria-hidden="true"
+          />
+        </button>
+      </div>
+
+      <header class="certificate-hero" id="degree">
+        <img
+          class="certificate-icon"
+          src="/resume-icons/illinois-ahs.jpeg"
+          alt="University of Illinois College of Applied Health Sciences logo"
+        />
+        <div class="certificate-copy">
+          <p class="eyebrow">
+            Professional Certificate
+          </p>
+          <h1>
+            Information Accessibility Design and Policy
+          </h1>
+          <p class="intro">
+            A University of Illinois College of Applied Health Sciences certificate
+            focused on accessible information architecture, assistive technology,
+            universal design, and inclusive digital resources.
+          </p>
+          <div class="program-links">
+            <a
+              class="program-link"
+              href={programWebsiteUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Program Website
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <section class="section" id="curriculum" aria-labelledby="curriculum-heading">
+        <h2 id="curriculum-heading">
+          Curriculum
+        </h2>
+        <div class="curriculum-chart">
+          <section
+            class="course-group course-group-wide"
+            id={slugify(section.heading)}
+            aria-labelledby="courses-heading"
+          >
+            <h3 id="courses-heading">
+              {section.heading}
+            </h3>
+            <ul>
+              {section.items.map((item) => (
+                <li>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script>
+      /** @typedef {"light" | "dark"} Theme */
+      const themeToggle =
+        document.querySelector<HTMLButtonElement>(".theme-toggle");
+      const themeToggleIcon =
+        document.querySelector<HTMLImageElement>(".theme-toggle-icon");
+      const pageSections = document.querySelectorAll(
+        ".certificate-hero[id], .section[id], .course-group[id]",
+      );
+      const sectionMapLinks = document.querySelectorAll("[data-section-link]");
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+      /**
+       * @param {Theme} theme
+       * @param {boolean} persist
+       */
+      function setTheme(theme, persist = true) {
+        document.documentElement.dataset.theme = theme;
+        if (persist) {
+          localStorage.setItem("theme", theme);
+        }
+
+        if (themeToggle) {
+          themeToggle.setAttribute(
+            "aria-label",
+            theme === "dark" ? "Switch to light mode" : "Switch to dark mode",
+          );
+          themeToggle.setAttribute(
+            "title",
+            theme === "dark" ? "To Light Mode" : "To Dark Mode",
+          );
+        }
+
+        if (themeToggleIcon) {
+          themeToggleIcon.src =
+            theme === "dark" ? "/icons/dark-to-light.png" : "/icons/dark-to-light.png";
+        }
+      }
+
+      const currentTheme =
+        document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+      setTheme(currentTheme, false);
+
+      systemTheme.addEventListener("change", (event) => {
+        if (!localStorage.getItem("theme")) {
+          setTheme(event.matches ? "dark" : "light", false);
+        }
+      });
+
+      themeToggle?.addEventListener("click", () => {
+        setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+      });
+
+      const markActiveSection = (id) => {
+        sectionMapLinks.forEach((link) => {
+          const isActive =
+            link instanceof HTMLElement && link.dataset.sectionLink === id;
+          link.classList.toggle("is-active", isActive);
+        });
+      };
+
+      const markCurrentSection = () => {
+        const activationPoint = window.scrollY + window.innerHeight * 0.22;
+        let currentSection = pageSections[0];
+
+        pageSections.forEach((section) => {
+          if (
+            section instanceof HTMLElement &&
+            section.offsetTop <= activationPoint
+          ) {
+            currentSection = section;
+          }
+        });
+
+        if (currentSection instanceof HTMLElement) {
+          markActiveSection(currentSection.id);
+        }
+      };
+
+      markCurrentSection();
+      window.addEventListener("scroll", markCurrentSection, { passive: true });
+      window.addEventListener("resize", markCurrentSection);
+    </script>
+  </body>
+</html>
+
+<style>
+  :root {
+    --background: #f7f3ec;
+    --background-soft: #eef3f1;
+    --text: #1b1f23;
+    --muted: #4b5560;
+    --accent: #2f6f62;
+    --accent-strong: #1f5f53;
+    --border: rgba(27, 31, 35, 0.14);
+    --border-soft: rgba(27, 31, 35, 0.12);
+    --surface-card: rgba(255, 255, 255, 0.62);
+    --shadow: rgba(27, 31, 35, 0.14);
+    color: var(--text);
+    background: var(--background);
+    color-scheme: light;
+    font-family:
+      Inter,
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
+  }
+
+  :root[data-theme="dark"] {
+    --background: #141715;
+    --background-soft: #1d2421;
+    --text: #f2f0ea;
+    --muted: #b7c0ba;
+    --accent: #80c9b5;
+    --accent-strong: #a4decd;
+    --border: rgba(242, 240, 234, 0.18);
+    --border-soft: rgba(242, 240, 234, 0.12);
+    --surface-card: rgba(255, 255, 255, 0.07);
+    --shadow: rgba(0, 0, 0, 0.3);
+    color-scheme: dark;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--background) 96%, transparent),
+        color-mix(in srgb, var(--background-soft) 96%, transparent)
+      ),
+      var(--background);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .site-shell {
+    width: min(100% - 32px, 960px);
+    margin: 0 auto;
+    padding: 56px 0 72px;
+  }
+
+  .page-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+  }
+  .section-sidebar {
+    display: none;
+  }
+
+  .section-sidebar a {
+    position: relative;
+    display: block;
+    padding-left: 22px;
+    color: color-mix(in srgb, var(--muted) 78%, transparent);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .section-sidebar a::before {
+    position: absolute;
+    top: 0.4em;
+    left: 0;
+    z-index: 1;
+    width: 7px;
+    aspect-ratio: 1;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    background: var(--background);
+    content: "";
+  }
+
+  .section-sidebar a:hover,
+  .section-sidebar a.is-active {
+    color: var(--accent-strong);
+  }
+
+  .section-sidebar a.is-active::before {
+    background: currentColor;
+  }
+
+  .page-control-links {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .home-link,
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    color: var(--accent-strong);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 0;
+  }
+  .home-link-icon,
+  .theme-toggle-icon {
+    width: 24px;
+    aspect-ratio: 1;
+    display: block;
+  }
+  :root[data-theme="dark"] .home-link-icon,
+  :root[data-theme="dark"] .theme-toggle-icon {
+    filter: invert(1);
+  }
+
+  @media (min-width: 1380px) {
+    .page-control-links {
+      position: fixed;
+      top: 36px;
+      left: clamp(36px, 4vw, 72px);
+      z-index: 20;
+    }
+
+    .page-controls > .theme-toggle {
+      position: fixed;
+      top: 36px;
+      right: clamp(36px, 4vw, 72px);
+      z-index: 20;
+    }
+
+    .section-sidebar {
+      position: fixed;
+      top: 50%;
+      left: max(24px, calc((100vw - 960px) / 2 - 220px));
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 172px;
+      min-height: min(560px, 72vh);
+      transform: translateY(-50%);
+    }
+
+    .section-sidebar::before {
+      position: absolute;
+      top: 0.4em;
+      bottom: 0.4em;
+      left: 3px;
+      width: 1px;
+      background: color-mix(in srgb, var(--border) 72%, transparent);
+      content: "";
+    }
+  }
+
+  .certificate-hero {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    align-items: center;
+    gap: 28px;
+    padding: 10px 0 48px;
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: 28px;
+  }
+
+  .certificate-icon {
+    width: 160px;
+    aspect-ratio: 1;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 18px 48px var(--shadow);
+    object-fit: cover;
+    transform: translateY(-12px);
+  }
+
+  .certificate-copy {
+    text-align: left;
+  }
+
+  .eyebrow {
+    margin: 0 0 10px;
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin-top: 0;
+  }
+
+  h1 {
+    margin-bottom: 14px;
+    font-size: clamp(2.7rem, 7vw, 5.3rem);
+    line-height: 0.96;
+    letter-spacing: 0;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+    font-size: 1rem;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    margin-bottom: 14px;
+    font-size: 1.2rem;
+  }
+
+  .intro {
+    max-width: 660px;
+    margin-bottom: 18px;
+    color: var(--muted);
+    font-size: clamp(1.08rem, 2.6vw, 1.3rem);
+    line-height: 1.55;
+  }
+
+  .program-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .program-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 16px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface-card);
+    color: var(--accent-strong);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .section {
+    padding: 42px 0 0;
+    scroll-margin-top: 28px;
+  }
+
+  .curriculum-chart {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .course-group {
+    min-height: 100%;
+    padding: 26px 24px;
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    background: var(--surface-card);
+    scroll-margin-top: 28px;
+  }
+
+  .course-group-wide {
+    grid-column: 1 / -1;
+  }
+
+  ul {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 760px) {
+    .site-shell {
+      width: min(100% - 24px, 960px);
+      padding: 32px 0 56px;
+    }
+
+    .certificate-hero,
+    .curriculum-chart {
+      grid-template-columns: 1fr;
+    }
+
+    .certificate-hero {
+      padding: 0 0 36px;
+    }
+
+    .certificate-icon {
+      width: min(64vw, 180px);
+      transform: none;
+    }
+
+    .section {
+      padding-top: 42px;
+    }
+
+    .course-group {
+      padding: 22px 20px;
+    }
+  }
+</style>
